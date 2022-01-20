@@ -1,0 +1,40 @@
+{
+  "name": "react-remote",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack serve --config webpack.dev.js",
+    "start": "live-server ./dist/ --port=3001",
+    "server": "node server/index.js",
+    "server:prod": "NODE_ENV=production node server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@emotion/cache": "^11.7.1",
+    "@emotion/react": "^11.7.1",
+    "@emotion/server": "^11.4.0",
+    "@emotion/styled": "^11.6.0",
+    "eventing-bus": "^2.0.1",
+    "express": "^4.17.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "7.15.0",
+    "@babel/preset-env": "7.15.0",
+    "@babel/preset-react": "7.14.5",
+    "@babel/register": "^7.16.9",
+    "babel-loader": "8.2.2",
+    "html-webpack-plugin": "^5.5.0",
+    "ignore-styles": "^5.0.1",
+    "live-server": "^1.2.1",
+    "webpack": "5.51.1",
+    "webpack-cli": "4.9.0",
+    "webpack-dev-server": "4.4.0"
+  }
+}
