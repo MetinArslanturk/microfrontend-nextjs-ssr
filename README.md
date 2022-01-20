@@ -1,0 +1,1 @@
+A framework agnostic implementation of microfrontend with Module Federation of Webpack 5. It supports SSR and shared modules (even nextjs has them eager the remote app never re-fetches the shared libs). Also, it has dynamic support for module federation. So, remote module urls can be changed without re-building the app and can be given in runtime.
