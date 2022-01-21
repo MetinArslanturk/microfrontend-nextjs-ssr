@@ -8,7 +8,7 @@ https://medium.com/@metinarslanturkk/how-i-implemented-dynamic-loaded-framework-
 
 - At the first time execute ```yarn install``` in _next-host_ and _react-remote_ folders.
 
-For a __development run__ order respectively (in different terminal tabs):
+For a __development run__, follow steps order respectively (in different terminal tabs):
 
 - Execute ```yarn server``` in _react-remote_ folder
 - Execute ```yarn dev``` in _react-remote_ folder
@@ -16,7 +16,7 @@ For a __development run__ order respectively (in different terminal tabs):
 
 Go to http://localhost:3000 Check it and have fun.
 
-For a __production run__ order respectively (in different terminal tabs):
+For a __production run__, follow steps order respectively (in different terminal tabs):
 
 - Execute ```yarn server:prod``` in _react-remote_ folder
 - Execute ```yarn build``` in _react-remote_ folder and Execute ```yarn start``` in _react-remote_ folder
