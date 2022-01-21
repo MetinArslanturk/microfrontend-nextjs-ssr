@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import EventBus from "eventing-bus";
 import styled from "@emotion/styled";
 
 const Button = styled.button`
