@@ -20,6 +20,6 @@ For a __production run__, follow steps order respectively (in different terminal
 
 - Execute ```yarn server:prod``` in _react-remote_ folder
 - Execute ```yarn build``` in _react-remote_ folder and Execute ```yarn start``` in _react-remote_ folder
-- Execute ```yarn build``` in _next-host_ folder Execute ```yarn start``` in _next-host_ folder
+- Execute ```yarn build``` in _next-host_ folder and Execute ```yarn start``` in _next-host_ folder
 
 Go to http://localhost:3000 Check it and have fun.
