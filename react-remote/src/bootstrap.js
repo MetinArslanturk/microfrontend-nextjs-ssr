@@ -6,7 +6,7 @@ import appConfig from "../public/metadata.json";
 import App from "./App";
 
 const styleCache = createCache({
-  key: appConfig.appName,
+  key: appConfig.appName.toLowerCase(),
 });
 
 // Mount function to start up the app

@@ -4,6 +4,7 @@ const fetchRemoteAppInfo = async (remoteApps, fetchFnc) => {
             if (remoteApp.type === 'mf') {
                 const basePath = process.env[remoteApp.env_prefix + '_METADATA'].replace('/metadata.json', '');
                 process.env[remoteApp.env_prefix + '_BASE_PATH'] = data.last_deploy_id !== 'development' ? `${basePath}/${data.last_deploy_id}` : basePath;
+                process.env[remoteApp.env_prefix + '_APP_NAME'] = data.appName;
             } else if (remoteApp.type === 'i18n') {
                 const basePath = process.env[remoteApp.env_prefix + '_METADATA'].replace('/metadata.json', '');
                 process.env[remoteApp.env_prefix + '_BASE_PATH'] = `${basePath}/${data.last_deploy_id}`;

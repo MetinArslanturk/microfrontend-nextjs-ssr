@@ -18,7 +18,8 @@ async function loadComponent(scope: any, module: any) {
   // @ts-ignore
   const factory = await window[scope].get(module);
   const Module = factory();
-
+  // @ts-ignore
+  window[`MF_${scope}_module`] = Module;
   return Module;
 }
 
@@ -82,11 +83,17 @@ function DynamicRemoteApp({
     }
   }, [remoteModule]);
 
-  const { ready } = useDynamicScript(url);
+  const { ready } = useDynamicScript(url, scope);
 
   useEffect(() => {
     async function load() {
       if (ready && !remoteModule) {
+        // @ts-ignore
+        const moduleFromGlobalWindow = window[`MF_${scope}_module`];
+        if (moduleFromGlobalWindow){
+          setRemoteModule(moduleFromGlobalWindow);
+          return;
+        }
         const fetchedModule = await loadComponent(scope, module);
         setRemoteModule(fetchedModule);
       }

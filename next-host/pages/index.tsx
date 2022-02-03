@@ -29,9 +29,10 @@ const SkeletonWrapper = styled.div`
 type Props = {
   innerHTMLContent: string;
   MFRemoteButtonRemoteEntryPath: string;
+  MFRemoteButtonAppName: string;
 };
 
-const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath }: Props) => {
+const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonAppName }: Props) => {
   console.log('Home rendered');
   
   const [parentCounter, setParentCounter] = useState(0);
@@ -50,8 +51,8 @@ const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath }: Props) => {
         // this will be CDN host probably
         remoteAppInfo={{
           url: MFRemoteButtonRemoteEntryPath,
-          scope: "RemoteButton",
-          module: "./RemoteButtonApp",
+          scope: MFRemoteButtonAppName,
+          module: `./${MFRemoteButtonAppName}App`,
         }}
         innerHTMLContent={innerHTMLContent}
         skeletonThreshold={500}
@@ -92,6 +93,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       MFRemoteButtonRemoteEntryPath: process.env.MF_REMOTE_BUTTON_BASE_PATH + '/remoteEntry.js',
+      MFRemoteButtonAppName: process.env.MF_REMOTE_BUTTON_APP_NAME,
       innerHTMLContent: preRender.content,
       preReadyEmotionStyles,
     },

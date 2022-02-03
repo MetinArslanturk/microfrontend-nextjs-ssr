@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
 
-const urlCache = new Set();
-export const useDynamicScript = (url: string) => {
-  const [ready, setReady] = useState(false);
+const scopeCache = new Set();
+export const useDynamicScript = (url: string, scope: string) => {
+  const [ready, setReady] = useState(scopeCache.has(scope));
   const [errorLoading, setErrorLoading] = useState(false);
 
   useEffect(() => {
     if (!url) return;
 
-    if (urlCache.has(url)) {
-      setReady(true);
-      setErrorLoading(false);
+    if (scopeCache.has(scope)) {
       return;
     }
 
@@ -24,7 +22,7 @@ export const useDynamicScript = (url: string) => {
     element.async = true;
 
     element.onload = () => {
-      urlCache.add(url);
+      scopeCache.add(scope);
       setReady(true);
     };
 
@@ -35,11 +33,7 @@ export const useDynamicScript = (url: string) => {
 
     document.head.appendChild(element);
 
-    return () => {
-      urlCache.delete(url);
-      document.head.removeChild(element);
-    };
-  }, [url]);
+  }, [url, scope]);
 
   return {
     errorLoading,

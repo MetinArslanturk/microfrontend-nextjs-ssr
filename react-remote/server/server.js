@@ -10,7 +10,7 @@ import App from "../src/App.js";
 
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
-const cache = createCache({key: appConfig.appName})
+const cache = createCache({key: appConfig.appName.toLowerCase()})
 const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache)
 
 const PORT = process.env.PORT || 3003;
