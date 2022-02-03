@@ -1,16 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDynamicScript } from "../hooks/useDynamicScript";
 import styled from "@emotion/styled";
+// @ts-ignore
 import EventStream from "eventing-bus/lib/event_stream";
 
 const AppWrapper = styled.div`
   position: relative;
 `;
 
-async function loadComponent(scope, module) {
+
+async function loadComponent(scope: any, module: any) {
+  // @ts-ignore
   await __webpack_init_sharing__("default");
   const container = window[scope];
+  // @ts-ignore
   await container.init(__webpack_share_scopes__.default);
+  // @ts-ignore
   const factory = await window[scope].get(module);
   const Module = factory();
 
@@ -22,10 +27,10 @@ function DynamicRemoteApp({
   innerHTMLContent,
   skeleton,
   skeletonThreshold,
-}) {
+}: any) {
   console.log("Remote-App injecter (in host app) rendered");
   const wrapperRef = useRef(null);
-  const skeletonTimeoutRef = useRef(null);
+  const skeletonTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { module, scope, url } = remoteAppInfo;
 
@@ -35,9 +40,10 @@ function DynamicRemoteApp({
   // Send message to child && listen messages from child
   useEffect(() => {
     const microAppEventBus = new EventStream();
+    // @ts-ignore
     window.microAppEventBus = microAppEventBus;
 
-    const callback = (name) => {
+    const callback = (name: string) => {
       console.log(`Hey I am parent and I got a new message: ${name}!`);
     };
     const unsub = microAppEventBus.on("microAppChildEventsBus", callback);
@@ -71,6 +77,7 @@ function DynamicRemoteApp({
       }
       const { mount } = remoteModule;
       setShowSkeleton(false);
+      // @ts-ignore
       mount(wrapperRef.current, {});
     }
   }, [remoteModule]);
