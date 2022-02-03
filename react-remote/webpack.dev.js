@@ -1,10 +1,15 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-const deps = require("./package.json").dependencies;
+const moduleFederationConf = require("./module-federation.config.js");
+const path = require('path');
 
 module.exports = {
   devServer: {
     port: 3001,
+    static: { 
+      directory: path.resolve(__dirname, './public'), 
+      publicPath: '/'
+    }
   },
   module: {
     rules: [
@@ -15,31 +20,13 @@ module.exports = {
       },
     ],
   },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+  },
   mode: "development",
   plugins: [
-    new ModuleFederationPlugin({
-      name: "TestRemote",
-      filename: "remoteEntry.js",
-      exposes: {
-        "./RemoteButtonApp": "./src/bootstrap",
-      },
-      shared: [
-        {
-          react: { requiredVersion: deps.react, singleton: true },
-          "react-dom": { requiredVersion: deps["react-dom"], singleton: true },
-          'eventing-bus': { requiredVersion: deps['eventing-bus'], singleton: true },
-          '@emotion/styled': {
-            requiredVersion: deps['@emotion/styled'], singleton: true
-          },
-          '@emotion/react': {
-            requiredVersion: deps['@emotion/react'], singleton: true
-          },
-          '@emotion/cache': {
-            requiredVersion: deps['@emotion/cache'], singleton: true
-          },
-        },
-      ],
-    }),
+    new ModuleFederationPlugin(moduleFederationConf.config),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),

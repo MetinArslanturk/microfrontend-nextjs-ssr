@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import appConfig from "../micro-app-config.json";
+import appConfig from "../public/metadata.json";
 import App from "./App";
 
 const styleCache = createCache({
@@ -10,12 +10,12 @@ const styleCache = createCache({
 });
 
 // Mount function to start up the app
-const mount = (el, noHydrate) => {
+const mount = (el, initialProps, noHydrate) => {
   const renderOrHydrate = noHydrate ? ReactDOM.render : ReactDOM.hydrate;
   
   renderOrHydrate(
     <CacheProvider value={styleCache}>
-      <App />
+      <App {...initialProps}/>
     </CacheProvider>,
     el
   );
@@ -26,7 +26,7 @@ const mount = (el, noHydrate) => {
 if (process.env.NODE_ENV === "development") {
   const devRoot = document.querySelector("#remote_root");
   if (devRoot) {
-    mount(devRoot, true);
+    mount(devRoot, {}, true);
   }
 }
 

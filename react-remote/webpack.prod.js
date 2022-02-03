@@ -1,5 +1,7 @@
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
-const deps = require('./package.json').dependencies;
+const moduleFederationConf = require("./module-federation.config.js");
+const WebpackShellPluginNext = require('webpack-shell-plugin-next');
+const path = require('path');
 
 module.exports = {
   module: {
@@ -12,34 +14,20 @@ module.exports = {
     ],
   },
   mode: "production",
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    clean: true,
+  },
   plugins: [
     new ModuleFederationPlugin(
-      {
-        name: 'TestRemote',
-        filename: 'remoteEntry.js',
-        exposes: {
-            './RemoteButtonApp':
-              './src/bootstrap',
-          },
-        shared: [
-          {
-            react: { requiredVersion: deps.react, singleton: true },
-            "react-dom": { requiredVersion: deps["react-dom"], singleton: true },
-            'eventing-bus': { requiredVersion: deps['eventing-bus'], singleton: true },
-            '@emotion/styled': {
-              requiredVersion: deps['@emotion/styled'],
-              singleton: true
-            },
-            '@emotion/react': {
-              requiredVersion: deps['@emotion/react'],
-              singleton: true
-            },
-            '@emotion/cache': {
-              requiredVersion: deps['@emotion/react'], singleton: true
-            },
-          },
-        ],
-      }
+      moduleFederationConf.config
     ),
+    new WebpackShellPluginNext({
+      onAfterDone:{
+        scripts: ['node postbuild.js'],
+        blocking: true,
+        parallel: false
+      }
+    })
   ],
 };

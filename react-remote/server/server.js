@@ -4,7 +4,7 @@ import { CacheProvider } from '@emotion/react'
 import createEmotionServer from '@emotion/server/create-instance'
 import createCache from '@emotion/cache'
 import express from "express";
-import appConfig from "../micro-app-config.json";
+import appConfig from "../public/metadata.json";
 import App from "../src/App.js";
 
 
