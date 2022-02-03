@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node src/build.js",
-    "dev": "concurrently \"nodemon --watch src src/build.js\" \"live-server dist --cors\""
+    "dev": "concurrently \"nodemon --watch src src/build.js\" \"live-server dist --port=3002 --cors\""
 
   },
   "dependencies": {

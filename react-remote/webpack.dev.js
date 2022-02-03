@@ -5,7 +5,7 @@ const path = require('path');
 
 module.exports = {
   devServer: {
-    port: 3001,
+    port: 3002,
     static: { 
       directory: path.resolve(__dirname, './public'), 
       publicPath: '/'

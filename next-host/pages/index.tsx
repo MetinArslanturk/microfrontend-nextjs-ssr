@@ -48,7 +48,7 @@ const Home = ({ innerHTMLContent }: Props) => {
         // We are providing this dynamically, so this can be fetched with getStaticProps or on runtime at client side
         // this will be CDN host probably
         remoteAppInfo={{
-          url: "http://localhost:3001/remoteEntry.js",
+          url: "http://localhost:3002/remoteEntry.js",
           scope: "TestRemote",
           module: "./RemoteButtonApp",
         }}
@@ -77,7 +77,7 @@ const Home = ({ innerHTMLContent }: Props) => {
 export const getStaticProps: GetStaticProps = async () => {
   const preReadyEmotionStyles = [];
   // This will be an express server in your custom host
-  const preRender = await fetch("http://localhost:3002/prerender").then((res) =>
+  const preRender = await fetch("http://localhost:3003/prerender").then((res) =>
     res.json()
   );
 

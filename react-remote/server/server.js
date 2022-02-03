@@ -13,7 +13,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || "development";
 const cache = createCache({key: appConfig.appName})
 const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache)
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3003;
 const app = express();
 
 app.get("/prerender", (req, res) => {
