@@ -2,20 +2,26 @@
   "name": "next-host",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "next:dev": "next dev",
+    "next:build": "next build",
+    "build": "NODE_ENV=production dotenv -e .remoteapps.env -- node scripts/prebuild.js",
+    "next:start": "next start",
+    "dev": "NODE_ENV=development dotenv -e .remoteapps.env -- node scripts/custom-server.js",
+    "start": "NODE_ENV=production dotenv -e .remoteapps.env -- node scripts/custom-server.js",
     "lint": "next lint"
   },
   "dependencies": {
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
+    "dotenv": "^16.0.0",
     "eventing-bus": "^2.0.1",
+    "fs-extra": "^10.0.0",
     "next": "12.0.8",
     "react": "17.0.2",
     "react-content-loader": "^6.1.0",
     "react-dom": "17.0.2",
+    "shelljs": "^0.8.5",
     "webpack": "^5.66.0"
   },
   "resolutions": {
@@ -24,6 +30,7 @@
   "devDependencies": {
     "@types/node": "17.0.9",
     "@types/react": "17.0.38",
+    "dotenv-cli": "^4.1.1",
     "eslint": "8.7.0",
     "eslint-config-next": "12.0.8",
     "typescript": "4.5.4"

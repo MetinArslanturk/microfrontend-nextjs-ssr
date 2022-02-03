@@ -2,7 +2,7 @@ const deps = require('./package.json').dependencies;
 
 module.exports = {
     config: {
-        name: "TestRemote",
+        name: "RemoteButton",
         filename: "remoteEntry.js",
         exposes: {
           "./RemoteButtonApp": "./src/bootstrap",

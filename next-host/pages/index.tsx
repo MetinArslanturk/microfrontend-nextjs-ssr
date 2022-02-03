@@ -28,9 +28,10 @@ const SkeletonWrapper = styled.div`
 
 type Props = {
   innerHTMLContent: string;
+  MFRemoteButtonRemoteEntryPath: string;
 };
 
-const Home = ({ innerHTMLContent }: Props) => {
+const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath }: Props) => {
   console.log('Home rendered');
   
   const [parentCounter, setParentCounter] = useState(0);
@@ -48,8 +49,8 @@ const Home = ({ innerHTMLContent }: Props) => {
         // We are providing this dynamically, so this can be fetched with getStaticProps or on runtime at client side
         // this will be CDN host probably
         remoteAppInfo={{
-          url: "http://localhost:3002/remoteEntry.js",
-          scope: "TestRemote",
+          url: MFRemoteButtonRemoteEntryPath,
+          scope: "RemoteButton",
           module: "./RemoteButtonApp",
         }}
         innerHTMLContent={innerHTMLContent}
@@ -74,10 +75,11 @@ const Home = ({ innerHTMLContent }: Props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {  
+  
   const preReadyEmotionStyles = [];
   // This will be an express server in your custom host
-  const preRender = await fetch("http://localhost:3003/prerender").then((res) =>
+  const preRender = await fetch(process.env.MF_REMOTE_BUTTON_SERVER + '/prerender').then((res) =>
     res.json()
   );
 
@@ -89,6 +91,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
+      MFRemoteButtonRemoteEntryPath: process.env.MF_REMOTE_BUTTON_BASE_PATH + '/remoteEntry.js',
       innerHTMLContent: preRender.content,
       preReadyEmotionStyles,
     },

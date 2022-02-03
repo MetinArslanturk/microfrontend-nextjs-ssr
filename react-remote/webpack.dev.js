@@ -9,7 +9,12 @@ module.exports = {
     static: { 
       directory: path.resolve(__dirname, './public'), 
       publicPath: '/'
-    }
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': '*',
+  }
   },
   module: {
     rules: [

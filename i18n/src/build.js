@@ -6,7 +6,7 @@ import path from 'path';
 const config = JSON.parse(fs.readFileSync('src/config.json'));
 
 
-const deployID = shortUUID.generate();
+const deployID = shortUUID.generate().toLowerCase();
 
 if (!fs.existsSync('dist')) {
     fs.mkdirSync('dist');

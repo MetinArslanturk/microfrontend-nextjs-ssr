@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const shortUUID = require('short-uuid');
 const metadata = require('./public/metadata.json');
 
-const deployID = shortUUID.generate();
+const deployID = shortUUID.generate().toLowerCase();
 
 fs.mkdirSync(`dist/${deployID}`, { recursive: true });
 
