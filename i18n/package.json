@@ -1,0 +1,22 @@
+{
+  "name": "i18n",
+  "version": "1.0.0",
+  "main": "src/deploy.js",
+  "type": "module",
+  "author": "Metin Arslanturk",
+  "license": "MIT",
+  "scripts": {
+    "build": "node src/build.js",
+    "dev": "concurrently \"nodemon --watch src src/build.js\" \"live-server dist --cors\""
+
+  },
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "short-uuid": "^4.2.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1",
+    "nodemon": "^2.0.15",
+    "concurrently": "^7.0.0"
+  }
+}
