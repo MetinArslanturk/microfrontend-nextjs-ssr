@@ -71,7 +71,7 @@ function DynamicRemoteApp({
       }
       const { mount } = remoteModule;
       setShowSkeleton(false);
-      mount(wrapperRef.current);
+      mount(wrapperRef.current, {});
     }
   }, [remoteModule]);
 

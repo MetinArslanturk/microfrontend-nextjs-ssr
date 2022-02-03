@@ -3,3 +3,5 @@ next-host/.next
 next-host/out
 react-remote/node_modules
 react-remote/dist
+i18n/node_modules
+i18n/dist
