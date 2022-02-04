@@ -1,50 +1,58 @@
 // eslint-disable
 const { createServer } = require('http');
 const next = require('next');
-const { promises, constants } = require('fs-extra');
 const allRemoteApps = require("./remote-apps.js");
 const {fetchRemoteAppInfo, setEnvVars} = require("./fetch-set-remote-apps");
+const {purgeData} = require("./utils");
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+const locales = ["en-US", "es-MX"];
+
 const remoteAppsLastDeployIDs = {};
 
-// const checkExists = async (filePath) => {
-//   return promises.access(filePath, constants.F_OK)
-//            .then(() => true)
-//            .catch(() => false)
-// }
 
-// const purgeDirectory = async (dirPath) => {
-//   await checkExists(dirPath) && await promises.rm(dirPath, { recursive: true, force: true });
-// }
+const checkUpdatedDeployIDsAndPurgeData = async (retryCount = 0) => {
+  try {
+    const data = await fetchRemoteAppInfo(allRemoteApps, fetch);
+    let needsPurgeData = false; // This can be an array in future like whichPagesWillBePurged
+    if (!data) {
+      return;
+    }
+    data.forEach((remoteApp) => {
+      if (
+        remoteAppsLastDeployIDs[remoteApp.appName] !== remoteApp.last_deploy_id
+      ) {
+        setEnvVars(remoteApp);
+        remoteAppsLastDeployIDs[remoteApp.appName] = remoteApp.last_deploy_id;
+        needsPurgeData = true;
+      }
+    });
 
-// const purgeFile = async (filePath) => {
-//   const fullPathHTML = `${filePath}.html`;
-//   const fullPathJSON = `${filePath}.json`;
-//   await checkExists(fullPathHTML) && await promises.unlink(fullPathHTML);
-//   await checkExists(fullPathJSON) && await promises.unlink(fullPathJSON);
-// }
+    if (needsPurgeData) {
+      // PURGE ALL CACHED DATA (only related ones in future maybe)
+      purgeData(app, locales);
+    }
+  } catch (err) {
+    console.log(
+      "Ups, something went wrong in checkUpdatedDeploy... I will retry 3 times with 5 seconds delay",
+      err
+    );
+    if (retryCount < 3) {
+      setTimeout(() => {
+        checkUpdatedDeployIDsAndPurgeData(retryCount + 1);
+      }, 5000);
+    }
+  }
+};
 
-// const purgeData = async (newKey) => {
-//   const fullPathEnUS = '.next/server/pages/en-US';
-//   const fullPathEsMX = '.next/server/pages/es-MX';
-//   await purgeDirectory(fullPathEnUS);
-//   await purgeDirectory(fullPathEsMX);
-//   await purgeFile(fullPathEnUS);
-//   await purgeFile(fullPathEsMX);
-
-//   try {
-
-//     await app.server.incrementalCache.cache.reset();
-//     process.env.newKey = newKey;
-//     console.log(`Cache successfully purged`);
-//   } catch (err) {
-//     console.error(`Could not purge cache - ${err}`);
-//   }
-// };
+const checkUpdatedDeployIDsAndPurgeDataInterval = () => {
+  setInterval(async () => {
+    checkUpdatedDeployIDsAndPurgeData();
+  }, 10000)
+}
 
 
 fetchRemoteAppInfo(allRemoteApps, fetch).then(data => {
@@ -52,7 +60,7 @@ fetchRemoteAppInfo(allRemoteApps, fetch).then(data => {
     setEnvVars(remoteApp);
     remoteAppsLastDeployIDs[remoteApp.appName] = remoteApp.last_deploy_id;
   });
-
+  checkUpdatedDeployIDsAndPurgeDataInterval();
 }).then(() => {
   app.prepare().then(()=>{
 

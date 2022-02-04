@@ -11,7 +11,7 @@ const fetchRemoteAppInfo = async (remoteApps, fetchFnc) => {
           };
         });
     })
-  );
+  ).catch((err) => {console.log('Err', err);});
 
   return allRemoteApps;
 };
@@ -35,6 +35,9 @@ const setEnvVars = (remoteApp) => {
     process.env[
       remoteApp.env_prefix + "_BASE_PATH"
     ] = `${basePath}/${remoteApp.last_deploy_id}`;
+    process.env[
+      remoteApp.env_prefix + "_DEPLOY_ID"
+    ] = remoteApp.last_deploy_id;
   }
 };
 

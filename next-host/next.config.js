@@ -4,6 +4,11 @@ const deps = require('./package.json').dependencies;
 
 const nextConfig = {
   reactStrictMode: true,
+  i18n: {
+    locales: ["en-US", "es-MX"],
+    defaultLocale: "en-US",
+    localeDetection: false,
+  },
   webpack: (config) => {
 
     config.plugins.push(new ModuleFederationPlugin(

@@ -33,7 +33,11 @@ class MyDocument extends Document {
                 />
               );
             })}
-         </Head>
+          <script
+            src={`${process.env.I18N_BASE_PATH}/${this.props.locale}/common-i18n-loader.js`}
+            defer={true}
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />

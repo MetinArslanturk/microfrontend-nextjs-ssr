@@ -3,6 +3,8 @@ import { useState } from "react";
 import ContentLoader from "react-content-loader";
 import DynamicRemoteApp from "../components/DynamicRemoteApp";
 import styled from "@emotion/styled";
+import { serverSideTranslations, useTranslation } from "../next-i18next";
+import i18nConfig from "../next-i18next.config";
 
 const Button = styled.button`
   background-color: #4caf50;
@@ -32,14 +34,19 @@ type Props = {
   MFRemoteButtonAppName: string;
 };
 
+export const i18nNamespaces = ["common", "second"];
+
 const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonAppName }: Props) => {
   console.log('Home rendered');
+  const { t } = useTranslation('second');
   
   const [parentCounter, setParentCounter] = useState(0);
 
   return (
     <div>
       <p>Hello from NextJS</p>
+      This text comes from i18n(common): {t('test text', {ns: 'common'})} <br />
+      This text also comes from i18n(second): {t("second text", {ns: 'second'})} <br />
       <div>
         I am parent counter: {parentCounter}{" "}
         <Button onClick={() => setParentCounter((pc) => pc + 1)}>
@@ -76,7 +83,9 @@ const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonA
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {  
+export const getStaticProps: GetStaticProps = async ({locale}) => {  
+  const {_nextI18Next} = await serverSideTranslations(locale as string, i18nConfig, i18nNamespaces);
+  
   
   const preReadyEmotionStyles = [];
   // This will be an express server in your custom host
@@ -92,6 +101,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
+      _nextI18Next,
       MFRemoteButtonRemoteEntryPath: process.env.MF_REMOTE_BUTTON_BASE_PATH + '/remoteEntry.js',
       MFRemoteButtonAppName: process.env.MF_REMOTE_BUTTON_APP_NAME,
       innerHTMLContent: preRender.content,
