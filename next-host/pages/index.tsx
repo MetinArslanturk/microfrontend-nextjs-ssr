@@ -89,7 +89,13 @@ const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonA
 
 export const getStaticProps: GetStaticProps = async ({locale}) => {
   locale = locale as string;
-  const {_nextI18Next, commoni18n} = await serverSideTranslations(locale, i18nConfig, i18nNamespaces);
+  const { _nextI18Next, commoni18n } = await serverSideTranslations(
+    locale,
+    i18nConfig,
+    process.env.I18N_BASE_PATH as string,
+    process.env.I18N_DEPLOY_ID as string,
+    i18nNamespaces
+  );
 
   const preReadyEmotionStyles = [];
 

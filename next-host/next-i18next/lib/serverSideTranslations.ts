@@ -27,6 +27,8 @@ const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
 export const serverSideTranslations = async (
   initialLocale: string,
   i18Config: UserConfig,
+  i18nBasePath: string,
+  i18nDeployId: string,
   namespacesRequired: string[] = [],
   configOverride: UserConfig | null = null,
 ): Promise<SSRConfig> => {
@@ -62,10 +64,10 @@ export const serverSideTranslations = async (
   let reInit = false;  
 
 
-  if (!globalLastDeployId || globalLastDeployId !== process.env.I18N_DEPLOY_ID) {
+  if (!globalLastDeployId || globalLastDeployId !== i18nDeployId || i18nDeployId === 'development') {
     reInit = true;
     // @ts-ignore
-    globalLastDeployId = process.env.I18N_DEPLOY_ID;
+    globalLastDeployId = i18nDeployId;
   }
 
   const { i18n, initPromise } = createClient(
@@ -73,7 +75,7 @@ export const serverSideTranslations = async (
       ...config,
       lng: initialLocale,
     },
-    process.env.I18N_BASE_PATH,
+    i18nBasePath,
     reInit
   );
 

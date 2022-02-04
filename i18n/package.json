@@ -6,9 +6,9 @@
   "author": "Metin Arslanturk",
   "license": "MIT",
   "scripts": {
-    "build": "node src/build.js",
+    "build": "NODE_ENV=production node src/build.js",
     "start": "live-server dist --port=3001 --cors",
-    "dev": "concurrently \"nodemon --watch public src/build.js\" \"live-server dist --port=3001 --cors\""
+    "dev": "NODE_ENV=development concurrently \"nodemon --watch public src/build.js\" \"live-server .i18dev --port=3001 --cors\""
 
   },
   "dependencies": {
