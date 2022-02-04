@@ -21,6 +21,12 @@ module.exports = {
             '@emotion/cache': {
               requiredVersion: deps['@emotion/cache'], singleton: true
             },
+            'i18next': {
+              requiredVersion: deps['i18next'], singleton: true
+            },
+            'react-i18next': {
+              requiredVersion: deps['react-i18next'], singleton: true
+            },
           },
         ],
       }
