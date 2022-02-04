@@ -33,6 +33,7 @@ function DynamicRemoteApp({
   console.log("Remote-App injecter (in host app) rendered");
   const wrapperRef = useRef(null);
   const skeletonTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const eventBusRef = useRef(new EventStream());
 
   const { module, scope, url } = remoteAppInfo;
 
@@ -41,9 +42,7 @@ function DynamicRemoteApp({
 
   // Send message to child && listen messages from child
   useEffect(() => {
-    const microAppEventBus = new EventStream();
-    // @ts-ignore
-    window.microAppEventBus = microAppEventBus;
+    const microAppEventBus = eventBusRef.current;
 
     const callback = (name: string) => {
       console.log(`Hey I am parent and I got a new message: ${name}!`);
@@ -80,7 +79,7 @@ function DynamicRemoteApp({
       const { mount } = remoteModule;
       setShowSkeleton(false);
       // @ts-ignore
-      mount(wrapperRef.current, {locale, resources: window.i18NClones});
+      mount(wrapperRef.current, {locale, resources: window.i18NClones, eventBus: eventBusRef.current});
     }
   }, [remoteModule, locale]);
 

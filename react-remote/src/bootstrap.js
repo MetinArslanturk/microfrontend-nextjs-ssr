@@ -18,7 +18,7 @@ const mount = (el, initialProps, noHydrate) => {
   renderOrHydrate(
     <CacheProvider value={styleCache}>
       <I18nextProvider i18n={i18n}>
-      <App {...initialProps.appProps}/>
+        <App eventBus={initialProps.eventBus} {...initialProps.appProps}/>
       </I18nextProvider>
     </CacheProvider>,
     el

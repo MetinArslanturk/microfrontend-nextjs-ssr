@@ -14,7 +14,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const RemoteButton = () => {
+const RemoteButton = ({eventBus}) => {
   console.log("Remote-App (in remote) rendered");
   const [remoteCounter, setRemoteCounter] = useState(0);
 
@@ -22,14 +22,14 @@ const RemoteButton = () => {
   useEffect(() => {
     let unsub;
     let messageTimeout;
-    if (window.microAppEventBus) {
+    if (eventBus) {
       const callback = (name) => {
         console.log(`Hey I am child and I got a new message: ${name}!`);
       };
-      unsub = window.microAppEventBus.on("microAppParentEventsBus", callback);
+      unsub = eventBus.on("microAppParentEventsBus", callback);
 
       messageTimeout = setTimeout(() => {
-        microAppEventBus.publish("microAppChildEventsBus", "Oh, hey from child(remote) app");
+        eventBus.publish("microAppChildEventsBus", "Oh, hey from child(remote) app");
       }, 2000);
     }
     return () => {
