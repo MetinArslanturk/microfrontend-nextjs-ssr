@@ -1,8 +1,15 @@
 import React from "react";
 import Button from "./components/RemoteButton";
+import { useTranslation } from "react-i18next";
 
 const App = () => {
-  return <Button />;
+  const { t } = useTranslation();
+  return (
+    <>
+    <p>I am remote app and showing this text from common i18n: {t('test text')}</p>
+      <Button />
+    </>
+  );
 };
 
 export default App;

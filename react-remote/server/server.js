@@ -5,24 +5,36 @@ import createEmotionServer from '@emotion/server/create-instance'
 import createCache from '@emotion/cache'
 import express from "express";
 import appConfig from "../public/metadata.json";
+import { I18nextProvider } from 'react-i18next';
+import { initI18n } from "../src/init-i18n";
 import App from "../src/App.js";
 
 
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
-const cache = createCache({key: appConfig.appName.toLowerCase()})
-const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(cache)
+const styleCache = createCache({key: appConfig.appName.toLowerCase()})
+const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(styleCache)
 
 const PORT = process.env.PORT || 3003;
 const app = express();
 
-app.get("/prerender", (req, res) => {
+app.use(express.json())
+
+app.post("/prerender", (req, res) => {
+  
+  const { resources, locale, appProps = null } = req.body;
+  const i18n = initI18n(resources, locale);
+
   const html = ReactDOMServer.renderToString(
     React.createElement(
       CacheProvider,
-      { value: cache },
-      React.createElement(App, null)
-    )
+      { value: styleCache },
+      React.createElement(
+            I18nextProvider,
+            { i18n: i18n },
+            React.createElement(App, appProps)
+      )
+)
   );
   const chunks = extractCriticalToChunks(html)
   const styles = constructStyleTagsFromChunks(chunks);

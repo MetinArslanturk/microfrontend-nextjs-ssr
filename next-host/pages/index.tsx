@@ -5,6 +5,8 @@ import DynamicRemoteApp from "../components/DynamicRemoteApp";
 import styled from "@emotion/styled";
 import { serverSideTranslations, useTranslation } from "../next-i18next";
 import i18nConfig from "../next-i18next.config";
+import { useRouter } from "next/router";
+import { postData } from "../utils/fetch";
 
 const Button = styled.button`
   background-color: #4caf50;
@@ -39,6 +41,7 @@ export const i18nNamespaces = ["common", "second"];
 const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonAppName }: Props) => {
   console.log('Home rendered');
   const { t } = useTranslation('second');
+  const {locale} = useRouter();
   
   const [parentCounter, setParentCounter] = useState(0);
 
@@ -78,20 +81,28 @@ const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonA
             </ContentLoader>
           </SkeletonWrapper>
         }
+        locale={locale}
       />
     </div>
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({locale}) => {  
-  const {_nextI18Next} = await serverSideTranslations(locale as string, i18nConfig, i18nNamespaces);
-  
-  
+export const getStaticProps: GetStaticProps = async ({locale}) => {
+  locale = locale as string;
+  const {_nextI18Next, commoni18n} = await serverSideTranslations(locale, i18nConfig, i18nNamespaces);
+
   const preReadyEmotionStyles = [];
+
   // This will be an express server in your custom host
-  const preRender = await fetch(process.env.MF_REMOTE_BUTTON_SERVER + '/prerender').then((res) =>
-    res.json()
-  );
+  const preRender = await postData(process.env.MF_REMOTE_BUTTON_SERVER + '/prerender', {
+    locale,
+    resources: {
+      [locale]: {
+      ..._nextI18Next.initialI18nStore[locale],
+      common: commoni18n
+      }
+    }
+  })
 
   preReadyEmotionStyles.push({
     key: preRender.appName,

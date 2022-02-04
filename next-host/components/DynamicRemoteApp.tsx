@@ -28,6 +28,7 @@ function DynamicRemoteApp({
   innerHTMLContent,
   skeleton,
   skeletonThreshold,
+  locale
 }: any) {
   console.log("Remote-App injecter (in host app) rendered");
   const wrapperRef = useRef(null);
@@ -79,9 +80,9 @@ function DynamicRemoteApp({
       const { mount } = remoteModule;
       setShowSkeleton(false);
       // @ts-ignore
-      mount(wrapperRef.current, {});
+      mount(wrapperRef.current, {locale, resources: window.i18NClones});
     }
-  }, [remoteModule]);
+  }, [remoteModule, locale]);
 
   const { ready } = useDynamicScript(url, scope);
 
