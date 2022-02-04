@@ -1,4 +1,5 @@
 {
+    "appName": "I18N",
     "common_json_name": "common",
     "common_loader_js_name": "common-i18n-loader.js",
     "i18NClonesVarName": "i18NClones"

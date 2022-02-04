@@ -3,12 +3,13 @@ const { createServer } = require('http');
 const next = require('next');
 const { promises, constants } = require('fs-extra');
 const allRemoteApps = require("./remote-apps.js");
-const fetchRemoteAppInfo = require("./fetch-remote-apps");
+const {fetchRemoteAppInfo, setEnvVars} = require("./fetch-set-remote-apps");
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+const remoteAppsLastDeployIDs = {};
 
 // const checkExists = async (filePath) => {
 //   return promises.access(filePath, constants.F_OK)
@@ -47,6 +48,10 @@ const handle = app.getRequestHandler();
 
 
 fetchRemoteAppInfo(allRemoteApps, fetch).then(data => {
+  data.forEach(remoteApp => {
+    setEnvVars(remoteApp);
+    remoteAppsLastDeployIDs[remoteApp.appName] = remoteApp.last_deploy_id;
+  });
 
 }).then(() => {
   app.prepare().then(()=>{

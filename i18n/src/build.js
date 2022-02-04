@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import shortUUID from 'short-uuid';
-import path from 'path';
 
 
 const config = JSON.parse(fs.readFileSync('src/config.json'));
@@ -12,8 +11,15 @@ if (!fs.existsSync('dist')) {
     fs.mkdirSync('dist');
 }
 
+let previousDeployID = '';
+let oldMetadata = null;
+if (fs.existsSync('dist/metadata.json')) {
+    oldMetadata = JSON.parse(fs.readFileSync('dist/metadata.json'));
+    previousDeployID = oldMetadata.last_deploy_id;
+}
+
 fs.readdirSync('dist').forEach(file => {
-    if (file !== 'metadata.json') {
+    if (file !== 'metadata.json' && file !== previousDeployID) {
         fs.removeSync(`dist/${file}`, {force: true});
     }
 })
@@ -37,7 +43,7 @@ fs.readdirSync(targetDistPath).forEach((dirName) => {
 }`;
 
      fs.writeFileSync(targetDistPath + '/' + dirName + '/' + config.common_loader_js_name, commonJSContent);
-     fs.writeFileSync('dist/metadata.json', JSON.stringify({last_deploy_id: deployID}));
+     fs.writeFileSync('dist/metadata.json', JSON.stringify({last_deploy_id: deployID, appName: config.appName}));
     } else {
         throw Error('ERROR: '+ dirName + " does not include " + config.common_json_name + '.json');
     }

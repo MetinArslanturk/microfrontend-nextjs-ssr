@@ -1,13 +1,17 @@
 const shell = require("shelljs");
 const fetch = require("node-fetch");
 const allRemoteApps = require("./remote-apps.js");
-const fetchRemoteAppInfo = require("./fetch-remote-apps");
+const {fetchRemoteAppInfo, setEnvVars} = require("./fetch-set-remote-apps");
 
 
 
 
 const executeBuildScript = async (remoteApps) => {
-    await fetchRemoteAppInfo(remoteApps, fetch);
+    const data = await fetchRemoteAppInfo(remoteApps, fetch);
+    data.forEach(remoteApp => {
+      setEnvVars(remoteApp);
+    });
+    
     shell.exec(`yarn next:build`, {
         env: {
           ...process.env,
