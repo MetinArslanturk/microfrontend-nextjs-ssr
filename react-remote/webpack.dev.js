@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
+const Dotenv = require('dotenv-webpack');
 const moduleFederationConf = require("./module-federation.config.js");
 const path = require('path');
 
@@ -35,5 +36,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    new Dotenv({path: './.dev.env',})
   ],
 };
