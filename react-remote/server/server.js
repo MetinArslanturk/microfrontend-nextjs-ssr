@@ -9,9 +9,6 @@ import { I18nextProvider } from 'react-i18next';
 import { initI18n } from "../src/init-i18n";
 import App from "../src/App.js";
 
-
-process.env.NODE_ENV = process.env.NODE_ENV || "development";
-
 const styleCache = createCache({key: appConfig.appName.toLowerCase()})
 const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(styleCache)
 
