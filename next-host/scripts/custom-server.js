@@ -1,6 +1,7 @@
 // eslint-disable
 const { createServer } = require('http');
 const next = require('next');
+const schedule = require('node-schedule');
 const allRemoteApps = require("./remote-apps.js");
 const {fetchRemoteAppInfo, setEnvVars} = require("./fetch-set-remote-apps");
 const {purgeData} = require("./utils");
@@ -49,10 +50,17 @@ const checkUpdatedDeployIDsAndPurgeData = async (retryCount = 0) => {
 };
 
 const checkUpdatedDeployIDsAndPurgeDataInterval = () => {
-  setInterval(async () => {
+  schedule.scheduleJob("*/5 * * * *", function () {
     checkUpdatedDeployIDsAndPurgeData();
-  }, 10000)
-}
+  });
+};
+
+
+process.on('SIGINT', function () { 
+  schedule.gracefulShutdown().then(() => {
+    process.exit(0);
+  });  
+})
 
 
 fetchRemoteAppInfo(allRemoteApps, fetch).then(data => {
