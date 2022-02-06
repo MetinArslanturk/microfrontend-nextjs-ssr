@@ -32,35 +32,19 @@ if (process.env.NODE_ENV === "development") {
   
   if (devRoot) {
     ReactDOM.render(<p>Loading i18n and initial data...</p>, devRoot);
-    
-    const i18nMetaDataUrl = process.env.I18N_METADATA;
-    fetch(i18nMetaDataUrl).then(res => res.json()).then(data => {
-      const i18nBaseUrl =
-        data.last_deploy_id === "development"
-          ? i18nMetaDataUrl.replace("/metadata.json", "")
-          : i18nMetaDataUrl.replace(
-              "/metadata.json",
-              "/" + data.last_deploy_id
-            );
-      const i18nNamespaces = process.env.I18N_NAMESPACES.split(',');
-      const lang = process.env.I18N_LANG;
-      const i18nResources = {};
-      return Promise.all(
-        i18nNamespaces.map((ns) =>
-          fetch(i18nBaseUrl + "/" + lang + "/" + ns + ".json")
-            .then((translations) => translations.json())
-            .then((t) => (i18nResources[ns] = t))
-        )
-      ).then(() => ({i18nResources, locale: lang}));
-    }).then(resp => {
-      const {i18nResources, locale} = resp;
-      mount(devRoot, {resources: {
-        [locale]: i18nResources
-      },
-      locale
-    }, true);
-    })
 
+    const i18nMetaDataUrl = process.env.I18N_METADATA;
+    const i18nLocale = process.env.I18N_LOCALE;
+    const i18nNamespaces = process.env.I18N_NAMESPACES.split(',');
+
+    import("./initial-data-loader").then((mod) => {
+     const initFunction = mod.default;
+
+     initFunction({i18nMetaDataUrl, i18nNamespaces, locale: i18nLocale}).then((initialData) => {
+      const {resources, locale} = initialData;
+      mount(devRoot, {resources,locale}, true);
+     })
+    })
   }
 }
 
