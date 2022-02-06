@@ -98,9 +98,11 @@ export const getStaticProps: GetStaticProps = async ({locale}) => {
   );
 
   const preReadyEmotionStyles = [];
+  let preRender: {appName?: string, styleId?: string, styles?: string, content?: string} = {};
 
+  try {
   // This will be an express server in your custom host
-  const preRender = await postData(process.env.MF_REMOTE_BUTTON_SERVER + '/prerender', {
+  preRender = await postData(process.env.MF_REMOTE_BUTTON_SERVER + '/prerender', {
     locale,
     resources: {
       [locale]: {
@@ -109,6 +111,7 @@ export const getStaticProps: GetStaticProps = async ({locale}) => {
       }
     }
   })
+} catch (err) {}
 
   preReadyEmotionStyles.push({
     key: preRender.appName,
