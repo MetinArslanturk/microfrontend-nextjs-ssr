@@ -22,6 +22,10 @@ async function loadComponent(scope: any, module: any) {
   return Module;
 }
 
+// When a parent updates a prop, it will not effect this component.
+// Because we always return memoized version of this component.
+// All external props will be used with their initial values always.
+// You can make only internal state changes and internal re-render triggers here
 function DynamicRemoteApp({
   remoteAppInfo,
   innerHTMLContent,
