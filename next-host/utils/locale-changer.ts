@@ -4,6 +4,9 @@ import nextI18nextConfig from "../next-i18next.config";
 
 export const changeLocale = (router: NextRouter, targetLocale: string) => {
     const {locale} = router;
+    if (locale === targetLocale) {
+      return;
+    }
     const requiredI18NResources: {ns: string, deployID: string}[] = [];
     const currentResources = window.i18NClones[locale as string];
     const targetResources = window.i18NClones[targetLocale];

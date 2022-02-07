@@ -55,8 +55,10 @@ function DynamicRemoteApp({
       if (skeletonTimeoutRef.current) {
         clearTimeout(skeletonTimeoutRef.current);
       }
+
+      eventBus.unregisterCallbacksForEvent(`Container_to_${scope}`);
     };
-  }, [skeletonThreshold]);
+  }, [skeletonThreshold, eventBus, scope]);
 
   useEffect(() => {
     if (remoteModule) {

@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import Button from "./components/RemoteButton";
 import { useTranslation } from "react-i18next";
+import appConfig from "../public/metadata.json";
 
 const App = ({eventBus}) => {
   const { t, i18n } = useTranslation();
@@ -21,7 +22,11 @@ const App = ({eventBus}) => {
           i18n.changeLanguage(data.newLocale);
         }
       };
-      unsub = eventBus.on("microAppParentEventsBus", callback);
+      unsub = eventBus.on(`Container_to_${appConfig.appName}`, callback);
+
+      setTimeout(() => {
+        eventBus.publish(`to_Container`, 'greetings', 'Hello container app. I am your remote-child app.' )
+      }, 2000)
     }
     return () => {
       unsub && unsub();
