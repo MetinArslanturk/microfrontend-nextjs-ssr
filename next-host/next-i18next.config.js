@@ -5,7 +5,7 @@ module.exports = {
       defaultLocale: "en-US",
       localePath: 'public/static/locales',
       localeStructure: '{{lng}}/{{ns}}',
-      allTranslations: ['common', 'second'],
+      allNamespaces: ['common', 'second'],
     }
   };
   

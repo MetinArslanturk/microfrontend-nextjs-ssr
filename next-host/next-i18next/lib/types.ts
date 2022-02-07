@@ -13,7 +13,7 @@ type NextJsI18NConfig = {
   defaultLocale: string
   locales: string[],
   app?: string
-  allTranslations?: string[]
+  allNamespaces?: string[]
 }
 
 export type UserConfig = {

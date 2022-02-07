@@ -4,7 +4,7 @@ import { InternalConfig, CreateClientReturn, InitPromise, I18n } from '../types'
 
 let globalInstance: I18n
 
-const nodeCreateClient = (config: InternalConfig, i18HostBaseUrl?: string, reInit?: boolean): CreateClientReturn => {
+const nodeCreateClient = (config: InternalConfig, i18nHostBaseUrl?: string, i18nDeployId?: string, reInit?: boolean): CreateClientReturn => {
   
   let instance: I18n
   if (!globalInstance || reInit) {
@@ -26,9 +26,9 @@ const nodeCreateClient = (config: InternalConfig, i18HostBaseUrl?: string, reIni
     initPromise = Promise.all(
       config.locales.map((locale) => {
         return Promise.all(
-          config.allTranslations?.map((t) => {
+          config.allNamespaces?.map((t) => {
             return fetch(
-              `${i18HostBaseUrl}/${locale}/${t}.json`
+              `${i18nHostBaseUrl}/${locale}/${t}.json`
             )
               .then((res) => res.json())
               .then((d) => ({ key: t, data: d }));
@@ -36,6 +36,7 @@ const nodeCreateClient = (config: InternalConfig, i18HostBaseUrl?: string, reIni
         ).then((reduced) => {
           const allData: any = {};
           reduced.forEach((r) => {
+            r.data.__dep_ver = i18nDeployId;
             allData[r.key] = r.data;
           });
           

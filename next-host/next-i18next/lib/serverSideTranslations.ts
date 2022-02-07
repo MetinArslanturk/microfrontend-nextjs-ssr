@@ -76,6 +76,7 @@ export const serverSideTranslations = async (
       lng: initialLocale,
     },
     i18nBasePath,
+    globalLastDeployId,
     reInit
   );
 
