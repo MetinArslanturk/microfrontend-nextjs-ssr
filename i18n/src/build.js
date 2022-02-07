@@ -40,13 +40,12 @@ fs.readdirSync(targetDistPath).forEach((dirName) => {
     }
     const commonJSONPath = targetDistPath + '/' + dirName + '/' + config.common_json_name + '.json';
     if(fs.existsSync(commonJSONPath)) {
-        const commonJSONStr = fs.readFileSync(commonJSONPath);
-        const commonJSON = JSON.parse(commonJSONStr);
-        commonJSON.__dep_ver = deployID;
+        const commonJSON = fs.readFileSync(commonJSONPath);
         const commonJSContent = `if (typeof window !== 'undefined') {
     if (!window.${config.i18NClonesVarName}) {window.${config.i18NClonesVarName} = {};}
     if (!window.${config.i18NClonesVarName}['${dirName}']) {window.${config.i18NClonesVarName}['${dirName}'] = {};}
-    window.${config.i18NClonesVarName}['${dirName}'].${config.common_json_name} = ${JSON.stringify(commonJSON)};
+    window.${config.i18NClonesVarName}['${dirName}'].${config.common_json_name} = ${commonJSON};
+    window.${config.i18NClonesVarName}['${dirName}'].${config.common_json_name}.__dep_ver = '${deployID}';
 }`;
 
      fs.writeFileSync(targetDistPath + '/' + dirName + '/' + config.common_loader_js_name, commonJSContent);
