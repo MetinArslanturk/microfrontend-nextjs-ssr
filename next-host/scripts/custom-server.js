@@ -10,7 +10,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const locales = ["en-US", "es-MX"];
+const locales = require("../next.config.js").i18n.locales;
 
 const remoteAppsLastDeployIDs = {};
 

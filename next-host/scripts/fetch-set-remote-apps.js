@@ -32,6 +32,7 @@ const setEnvVars = (remoteApp) => {
       "/metadata.json",
       ""
     );
+    process.env[remoteApp.env_prefix + "_ROOT_PATH"] = basePath;
     process.env[remoteApp.env_prefix + "_BASE_PATH"] =
       remoteApp.last_deploy_id !== "development"
         ? `${basePath}/${remoteApp.last_deploy_id}`

@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDynamicScript } from "../hooks/useDynamicScript";
 import styled from "@emotion/styled";
-// @ts-ignore
-import EventStream from "eventing-bus/lib/event_stream";
+
 
 const AppWrapper = styled.div`
   position: relative;
@@ -28,36 +27,20 @@ function DynamicRemoteApp({
   innerHTMLContent,
   skeleton,
   skeletonThreshold,
+  eventBus,
   locale
-}: any) {
-  console.log("Remote-App injecter (in host app) rendered");
+}: {remoteAppInfo: any, innerHTMLContent: string, skeleton: any, skeletonThreshold: number, locale?: string, eventBus: any}) {
+
   const wrapperRef = useRef(null);
   const skeletonTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const eventBusRef = useRef(new EventStream());
 
   const { module, scope, url } = remoteAppInfo;
 
   const [remoteModule, setRemoteModule] = useState(null);
   const [showSkeleton, setShowSkeleton] = useState(false);
 
-  // Send message to child && listen messages from child
-  useEffect(() => {
-    const microAppEventBus = eventBusRef.current;
-
-    const callback = (name: string) => {
-      console.log(`Hey I am parent and I got a new message: ${name}!`);
-    };
-    const unsub = microAppEventBus.on("microAppChildEventsBus", callback);
 
 
-    const messageTimeout = setTimeout(() => {
-      microAppEventBus.publish("microAppParentEventsBus", "Hello from your container");
-    }, 2000);
-    return () => {
-      clearTimeout(messageTimeout);
-      unsub();
-    };
-  }, []);
 
   useEffect(() => {
     skeletonTimeoutRef.current = setTimeout(() => {
@@ -79,9 +62,9 @@ function DynamicRemoteApp({
       const { mount } = remoteModule;
       setShowSkeleton(false);
       // @ts-ignore
-      mount(wrapperRef.current, {locale, resources: window.i18NClones, eventBus: eventBusRef.current});
+      mount(wrapperRef.current, {locale, resources: window.i18NClones, eventBus});
     }
-  }, [remoteModule, locale]);
+  }, [remoteModule, locale, eventBus]);
 
   const { ready } = useDynamicScript(url, scope);
 

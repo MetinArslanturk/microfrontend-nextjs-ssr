@@ -1,12 +1,15 @@
 import type { GetStaticProps } from "next";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import ContentLoader from "react-content-loader";
 import DynamicRemoteApp from "../components/DynamicRemoteApp";
 import styled from "@emotion/styled";
 import { serverSideTranslations, useTranslation } from "../next-i18next";
 import i18nConfig from "../next-i18next.config";
 import { useRouter } from "next/router";
+// @ts-ignore
+import EventStream from "eventing-bus/lib/event_stream";
 import { postData } from "../utils/fetch";
+import { changeLocale } from "../utils/locale-changer";
 
 const Button = styled.button`
   background-color: #4caf50;
@@ -41,9 +44,22 @@ export const i18nNamespaces = ["common", "second"];
 const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonAppName }: Props) => {
   console.log('Home rendered');
   const { t } = useTranslation('second');
-  const {locale} = useRouter();
+  const remoteButtoneventBusRef = useRef(new EventStream());
+  const router = useRouter();
+  const {locale} = router;
+
+  const currentLocaleRef = useRef(locale);
   
   const [parentCounter, setParentCounter] = useState(0);
+
+
+  useEffect(() => {    
+    if (currentLocaleRef.current !== locale) {
+      const microAppEventBus = remoteButtoneventBusRef.current;
+      microAppEventBus.publish("microAppParentEventsBus", "change_locale", {newLocale: locale, resources: window.i18NClones});
+      currentLocaleRef.current = locale;
+    }
+  }, [locale])
 
   return (
     <div>
@@ -81,8 +97,18 @@ const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonA
             </ContentLoader>
           </SkeletonWrapper>
         }
+        eventBus={remoteButtoneventBusRef.current}
         locale={locale}
       />
+
+<button onClick={() => {
+       changeLocale(router, 'en-US')
+        
+      }}>en-US</button>{' '}
+      <button onClick={() => {
+       changeLocale(router, 'es-MX')
+        
+      }}>es-MX</button>
     </div>
   );
 };

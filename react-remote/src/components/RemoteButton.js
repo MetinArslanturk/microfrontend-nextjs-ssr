@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 const Button = styled.button`
@@ -14,29 +14,12 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const RemoteButton = ({eventBus}) => {
+const RemoteButton = () => {
   console.log("Remote-App (in remote) rendered");
   const [remoteCounter, setRemoteCounter] = useState(0);
 
-    // Send message to parent && listen messages from parent
-  useEffect(() => {
-    let unsub;
-    let messageTimeout;
-    if (eventBus) {
-      const callback = (name) => {
-        console.log(`Hey I am child and I got a new message: ${name}!`);
-      };
-      unsub = eventBus.on("microAppParentEventsBus", callback);
 
-      messageTimeout = setTimeout(() => {
-        eventBus.publish("microAppChildEventsBus", "Oh, hey from child(remote) app");
-      }, 2000);
-    }
-    return () => {
-      unsub && unsub();
-      messageTimeout && clearTimeout(messageTimeout);
-    };
-  }, []);
+
   return (
     <>
       <p>
