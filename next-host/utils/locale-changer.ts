@@ -28,7 +28,7 @@ export const changeLocale = (router: NextRouter, targetLocale: string) => {
           }
 
           res.loadNamespaces.forEach((loadNamespace: any) => {
-            window.i18NClones[loadNamespace.locale][loadNamespace.ns] = loadNamespace.resources;
+            window.i18NClones[targetLocale][loadNamespace.ns] = loadNamespace.resources;
           });
           // change language without worries
           router.push(router.asPath, router.asPath, { locale: targetLocale });
