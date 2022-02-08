@@ -19,7 +19,7 @@ export default async function handler(req: any, res: any) {
         if (targetNS === 'common') {
           const findInCache = commonI18NCache[targetLocale]?.find((c: any) => c.deployID === targetDeployID);
           if (findInCache) {
-            loadNamespaces.push({locale: targetLocale, ns: targetNS, resources: findInCache.resources});
+            loadNamespaces.push({ns: targetNS, resources: findInCache.resources});
             return Promise.resolve();
           }
         }
@@ -34,13 +34,13 @@ export default async function handler(req: any, res: any) {
 
           if (targetNS === 'common') {
             if (!commonI18NCache[targetLocale]) { commonI18NCache[targetLocale] = []; }
-            commonI18NCache[targetLocale].push({locale: targetLocale, deployID: targetDeployID, resources: dt});
+            commonI18NCache[targetLocale].push({deployID: targetDeployID, resources: dt});
             if (commonI18NCache[targetLocale].length > 5) {
               commonI18NCache[targetLocale].shift();
             }
           }
           
-          loadNamespaces.push({locale: targetLocale, ns: targetNS, resources: dt});
+          loadNamespaces.push({ns: targetNS, resources: dt});
         })
       }));
 
