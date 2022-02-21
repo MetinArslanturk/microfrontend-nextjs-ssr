@@ -2,12 +2,9 @@
   "name": "next-host",
   "private": true,
   "scripts": {
-    "next:dev": "next dev",
-    "next:build": "next build",
-    "build": "NODE_ENV=production dotenv -e .remoteapps.env -- node scripts/prebuild.js",
-    "next:start": "next start",
-    "dev": "NODE_ENV=development dotenv -e .remoteapps.env -- node scripts/custom-server.js",
-    "start": "NODE_ENV=production dotenv -e .remoteapps.env -- node scripts/custom-server.js",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -19,7 +16,7 @@
     "fs-extra": "^10.0.0",
     "hoist-non-react-statics": "^3.3.2",
     "i18next": "^21.6.10",
-    "next": "12.0.8",
+    "next": "12.1.0",
     "node-schedule": "^2.1.0",
     "react": "17.0.2",
     "react-content-loader": "^6.1.0",

@@ -6,9 +6,10 @@ import styled from "@emotion/styled";
 import { serverSideTranslations, useTranslation } from "../next-i18next";
 import i18nConfig from "../next-i18next.config";
 import { useRouter } from "next/router";
-import { postData } from "../utils/fetch";
 import { changeLocale } from "../utils/locale-changer";
 import { GlobalContext } from "../components/GlobalContext";
+import { getMicroAppsOfPage, MicroAppStruct, pagesAndMicroAppRelations } from "../utils/pages-microapps";
+import { microAppPropExtractor } from "../utils/micro-app-prop-extractor";
 
 const Button = styled.button`
   background-color: #4caf50;
@@ -33,14 +34,14 @@ const SkeletonWrapper = styled.div`
 `
 
 type Props = {
-  innerHTMLContent: string;
+  MFRemoteButtonInnerHTMLContent: string;
   MFRemoteButtonRemoteEntryPath: string;
   MFRemoteButtonAppName: string;
 };
 
 export const i18nNamespaces = ["common", "second"];
 
-const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonAppName }: Props) => {
+const Home = ({ MFRemoteButtonInnerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonAppName }: Props) => {
   console.log('Home rendered');
   const { t } = useTranslation('second');
   const router = useRouter();
@@ -70,7 +71,7 @@ const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonA
           scope: MFRemoteButtonAppName,
           module: `./${MFRemoteButtonAppName}App`,
         }}
-        innerHTMLContent={innerHTMLContent}
+        innerHTMLContent={MFRemoteButtonInnerHTMLContent}
         skeletonThreshold={500}
         skeleton={
           <SkeletonWrapper>
@@ -105,42 +106,52 @@ const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonA
 
 export const getStaticProps: GetStaticProps = async ({locale}) => {
   locale = locale as string;
+  const microApps = pagesAndMicroAppRelations['/'].map((mApp: MicroAppStruct) =>  mApp.nameInProps);
+  
+  const microAppProps: any = {};
+  const preReadyEmotionStyles: any = [];
+  const allRequiredMicroApps = await getMicroAppsOfPage("/");
+
+
+  const i18nData = (allRequiredMicroApps as any[]).find(
+    (microApp) => microApp.appName === "I18N"
+  );
+
   const { _nextI18Next, commoni18n } = await serverSideTranslations(
     locale,
     i18nConfig,
-    process.env.I18N_BASE_PATH as string,
-    process.env.I18N_DEPLOY_ID as string,
+    i18nData.basePath,
+    i18nData.deployID,
     i18nNamespaces
   );
 
-  const preReadyEmotionStyles = [];
-  let preRender: {appName?: string, styleId?: string, styles?: string, content?: string} = {};
-
-  try {
-  // This will be an express server in your custom host
-  preRender = await postData(process.env.MF_REMOTE_BUTTON_SERVER + '/prerender', {
-    locale,
-    resources: {
-      [locale]: {
-      ..._nextI18Next.initialI18nStore[locale],
-      common: commoni18n
-      }
+  // Automatically creates initial props for all microApps based on app's name in microApps array
+  // i.e. if you have a microApp called "RemoteButton" it will create props called
+  // "MFRemoteButtonInnerHTMLContent", "MFRemoteButtonRemoteEntryPath", "MFRemoteButtonAppName"
+  // MF{AppNameInProps}{propType} convention
+  for (const microAppName of microApps) {
+    const remoteMicroApp = (allRequiredMicroApps as any[]).find(
+      (microApp) => microApp.appName === microAppName
+    );
+  
+    if (remoteMicroApp) {
+      await microAppPropExtractor(
+        microAppName,
+        microAppProps,
+        remoteMicroApp,
+        locale,
+        _nextI18Next,
+        commoni18n,
+        preReadyEmotionStyles
+      );
     }
-  })
-} catch (err) {}
+  }
 
-  preReadyEmotionStyles.push({
-    key: preRender.appName,
-    styleId: preRender.styleId,
-    styles: preRender.styles,
-  });
 
   return {
     props: {
+      ...microAppProps,
       _nextI18Next,
-      MFRemoteButtonRemoteEntryPath: process.env.MF_REMOTE_BUTTON_BASE_PATH + '/remoteEntry.js',
-      MFRemoteButtonAppName: process.env.MF_REMOTE_BUTTON_APP_NAME,
-      innerHTMLContent: preRender.content,
       preReadyEmotionStyles,
     },
   };

@@ -52,6 +52,7 @@ export type CreateClientReturn = {
 export type SSRConfig = {
   _nextI18Next: {
     initialI18nStore: any
+    i18nBasePath: string
   },
   translationDeployId?: string,
   commoni18n?: any

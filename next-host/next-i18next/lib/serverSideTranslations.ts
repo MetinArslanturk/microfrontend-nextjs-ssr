@@ -110,6 +110,7 @@ export const serverSideTranslations = async (
   return {
     _nextI18Next: {
       initialI18nStore,
+      i18nBasePath
     },
     translationDeployId: globalLastDeployId,
     commoni18n

@@ -2,8 +2,17 @@ const commonI18NCache: any = {};
 
 export default async function handler(req: any, res: any) {
   if (req.method === 'POST') {
-    const latestDeployID = process.env["I18N_DEPLOY_ID"];
-    const i18nRootPath = process.env["I18N_ROOT_PATH"];
+
+    const metadataJSONUrl = process.env["I18N_METADATA"];
+    const i18nRootPath = (metadataJSONUrl as string).replace(
+      "/metadata.json",
+      ""
+    );
+
+    const metadataI18N = await fetch(metadataJSONUrl as string)
+    .then((resp) => resp.json());
+
+    const latestDeployID = metadataI18N.last_deploy_id;
     const requredNSs = req.body.requiredI18NResources
     const targetLocale = req.body.targetLocale;
     
