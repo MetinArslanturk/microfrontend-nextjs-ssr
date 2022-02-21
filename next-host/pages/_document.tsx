@@ -34,9 +34,9 @@ class MyDocument extends Document {
               );
             })}
             {/* @ts-ignore */}
-          <script src={`${this.props.pageProps._nextI18Next.i18nBasePath}/${this.props.locale}/common-i18n-loader.js`}
+          {this.props.pageProps?._nextI18Next?.i18nBasePath && <script src={`${this.props.pageProps._nextI18Next.i18nBasePath}/${this.props.locale}/common-i18n-loader.js`}
             defer={true}
-          />
+          />}
         </Head>
         <body>
           <Main />
