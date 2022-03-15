@@ -8,10 +8,10 @@
     "server:build": "webpack --config webpack.server.js",
     "dev": "webpack serve --config webpack.dev.js",
     "start": "live-server ./dist/ --port=3002 --no-browser",
+    "deploy": "dotenv -e .env.local -- node deploy.js",
     "server:start": "node server-dist/main.js",
     "server:dev": "NODE_ENV=development node server/index.js",
     "server:prod": "NODE_ENV=production node server/index.js",
-    "deploy-client-s3": "dotenv -e .env.local -- node deploy.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
