@@ -7,3 +7,4 @@ react-remote/server-dist
 i18n/node_modules
 i18n/dist
 i18n/.i18dev
+i18n/.env.local

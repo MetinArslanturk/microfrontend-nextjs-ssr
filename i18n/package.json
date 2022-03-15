@@ -8,16 +8,19 @@
   "scripts": {
     "build": "NODE_ENV=production node src/build.js",
     "start": "live-server dist --port=3001 --cors --no-browser",
-    "dev": "NODE_ENV=development concurrently \"nodemon --watch public src/build.js\" \"live-server .i18dev --port=3001 --cors --no-browser\""
-
+    "dev": "NODE_ENV=development concurrently \"nodemon --watch public src/build.js\" \"live-server .i18dev --port=3001 --cors --no-browser\"",
+    "deploy": "dotenv -e .env.local -- node src/deploy.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.1094.0",
+    "dotenv": "^16.0.0",
     "fs-extra": "^10.0.0",
     "short-uuid": "^4.2.0"
   },
   "devDependencies": {
+    "concurrently": "^7.0.0",
+    "dotenv-cli": "^5.0.0",
     "live-server": "^1.2.1",
-    "nodemon": "^2.0.15",
-    "concurrently": "^7.0.0"
+    "nodemon": "^2.0.15"
   }
 }
