@@ -14,8 +14,8 @@ const latestMetadata = JSON.parse(
 
 const latestDeployID = latestMetadata.last_deploy_id;
 
-const BUCKET_NAME = "mf-test-aws1";
-const I18N_TARGET_BASE_PATH = "i18n";
+const BUCKET_NAME = process.env.S3_BUCKET_NAME;
+const I18N_TARGET_BASE_PATH = latestMetadata.appName;
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
