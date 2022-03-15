@@ -1,7 +1,7 @@
 const commonI18NCache: any = {};
 
 const latestDeployID = process.env.I18N_DEPLOY_ID;
-const i18nRootPath = process.env.I18N_METADATA?.replace('/metadata.json', '');
+const i18nRootPath = process.env.I18N_ROOT_PATH;
 
 export default async function handler(req: any, res: any) {
   if (req.method === 'POST') {

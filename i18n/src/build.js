@@ -49,7 +49,7 @@ fs.readdirSync(targetDistPath).forEach((dirName) => {
 }`;
 
      fs.writeFileSync(targetDistPath + '/' + dirName + '/' + config.common_loader_js_name, commonJSContent);
-     fs.writeFileSync(distBasePathName + '/metadata.json', JSON.stringify({last_deploy_id: deployID, appName: config.appName}));
+     fs.writeFileSync(distBasePathName + '/metadata.json', JSON.stringify({appName: config.appName, last_deploy_id: deployID}));
     } else {
         throw Error('ERROR: '+ dirName + " does not include " + config.common_json_name + '.json');
     }
