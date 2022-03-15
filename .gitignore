@@ -4,6 +4,7 @@ next-host/out
 react-remote/node_modules
 react-remote/dist
 react-remote/server-dist
+react-remote/.env.local
 i18n/node_modules
 i18n/dist
 i18n/.i18dev

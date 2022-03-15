@@ -2168,6 +2168,16 @@ dot-case@^3.0.4:
     no-case "^3.0.4"
     tslib "^2.0.3"
 
+dotenv-cli@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv-cli/-/dotenv-cli-5.0.0.tgz#13ff77794096b00968d96187e4c8674e045461f3"
+  integrity sha512-0Cb2WMDJ805hTD7m43gXXFLraoE5KwrKmGW2dAzYvSEB96tlKI2hmcJ/9In4s2FfvkAFk3SjNQcLeKLoRSXhKA==
+  dependencies:
+    cross-spawn "^7.0.3"
+    dotenv "^16.0.0"
+    dotenv-expand "^8.0.1"
+    minimist "^1.2.5"
+
 dotenv-defaults@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/dotenv-defaults/-/dotenv-defaults-2.0.2.tgz#6b3ec2e4319aafb70940abda72d3856770ee77ac"
@@ -2175,12 +2185,22 @@ dotenv-defaults@^2.0.2:
   dependencies:
     dotenv "^8.2.0"
 
+dotenv-expand@^8.0.1:
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-8.0.2.tgz#c75c6f695cff061a9ed9a95a520c6cc84b912188"
+  integrity sha512-vKKAk+VOzAWOV/dPIeSYqhgC/TQY+6L6Ibkzfsr8xd1stdBsTuGu9asCOXgbYbBeS+f2Y6lqqEuw7riOA+xEUQ==
+
 dotenv-webpack@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/dotenv-webpack/-/dotenv-webpack-7.1.0.tgz#211fefac6bf500bf3bb66b286e1b12a23a2a70c0"
   integrity sha512-+aUOe+nqgLerA/n611oyC15fY79BIkGm2fOxJAcHDonMZ7AtDpnzv/Oe591eHAenIE0t6w03UyxDnLs/YUxx5Q==
   dependencies:
     dotenv-defaults "^2.0.2"
+
+dotenv@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.0.tgz#c619001253be89ebb638d027b609c75c26e47411"
+  integrity sha512-qD9WU0MPM4SWLPJy/r2Be+2WgQj8plChsyrCNQzW/0WjvcJQiKQJ9mH3ZgB3fxbUUxgc/11ZJ0Fi5KiimWGz2Q==
 
 dotenv@^8.2.0:
   version "8.6.0"
