@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { postData } from "../utils/fetch";
 import { changeLocale } from "../utils/locale-changer";
 import { GlobalContext } from "../components/GlobalContext";
+import { RemoteAppKeys, requiredRemoteAppsOfPage, REMOTE_APP_ENVS, RemoteAppProps } from "../remote-app-env-extractor";
 
 const Button = styled.button`
   background-color: #4caf50;
@@ -33,14 +34,12 @@ const SkeletonWrapper = styled.div`
 `
 
 type Props = {
-  innerHTMLContent: string;
-  MFRemoteButtonRemoteEntryPath: string;
-  MFRemoteButtonAppName: string;
+  [key in RemoteAppKeys]: RemoteAppProps
 };
 
 export const i18nNamespaces = ["common", "second"];
 
-const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonAppName }: Props) => {
+const Home = ({ RemoteButton }: Props) => {
   console.log('Home rendered');
   const { t } = useTranslation('second');
   const router = useRouter();
@@ -66,11 +65,11 @@ const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonA
         // We are providing this dynamically, so this can be fetched with getStaticProps or on runtime at client side
         // this will be CDN host probably
         remoteAppInfo={{
-          url: MFRemoteButtonRemoteEntryPath,
-          scope: MFRemoteButtonAppName,
-          module: `./${MFRemoteButtonAppName}App`,
+          url: RemoteButton.pageProps.entryPath,
+          scope: RemoteButton.pageProps.appName,
+          module: `./${RemoteButton.pageProps.appName}App`,
         }}
-        innerHTMLContent={innerHTMLContent}
+        innerHTMLContent={RemoteButton.innerHTMLContent}
         skeletonThreshold={500}
         skeleton={
           <SkeletonWrapper>
@@ -105,43 +104,62 @@ const Home = ({ innerHTMLContent, MFRemoteButtonRemoteEntryPath, MFRemoteButtonA
 
 export const getStaticProps: GetStaticProps = async ({locale}) => {
   locale = locale as string;
+  const preReadyEmotionStyles: any = [];
+  const allRemoteAppProps = {} as {[key in RemoteAppKeys]: RemoteAppProps};
+
+
+  const {I18N, RemoteButton} = REMOTE_APP_ENVS;
+
+
+  const remoteAppsToRenderSSR: requiredRemoteAppsOfPage = [
+    {propName: 'RemoteButton', app: RemoteButton, extraArgs: {}}
+  ];
+
+
+
   const { _nextI18Next, commoni18n } = await serverSideTranslations(
     locale,
     i18nConfig,
-    process.env.I18N_BASE_PATH as string,
-    process.env.I18N_DEPLOY_ID as string,
+    I18N.pageProps.entryPath,
+    I18N.deployID,
     i18nNamespaces
   );
 
-  const preReadyEmotionStyles = [];
-  let preRender: {appName?: string, styleId?: string, styles?: string, content?: string} = {};
 
-  try {
-  // This will be an express server in your custom host
-  preRender = await postData(process.env.MF_REMOTE_BUTTON_SERVER + '/prerender', {
-    locale,
-    resources: {
-      [locale]: {
-      ..._nextI18Next.initialI18nStore[locale],
-      common: commoni18n
-      }
+  for (const remoteApp of remoteAppsToRenderSSR) {
+    try {
+      // This will be an express server in your custom host
+      const response = await postData(remoteApp.app.serverRendererPath, {
+        locale,
+        resources: {
+          [locale]: {
+          ..._nextI18Next.initialI18nStore[locale],
+          common: commoni18n
+          }
+        },
+        ...remoteApp.extraArgs,
+      });
+      
+      preReadyEmotionStyles.push({
+        key: response.appName,
+        styleId: response.styleId,
+        styles: response.styles,
+      });
+
+      allRemoteAppProps[remoteApp.propName] = {...remoteApp.app, innerHTMLContent: response.content};
+    } catch (err) {
+      throw Error('Failed while taking pre-render results of remote-app: ' + err);
     }
-  })
-} catch (err) {}
+  }
 
-  preReadyEmotionStyles.push({
-    key: preRender.appName,
-    styleId: preRender.styleId,
-    styles: preRender.styles,
-  });
+  
+
 
   return {
     props: {
       _nextI18Next,
-      MFRemoteButtonRemoteEntryPath: process.env.MF_REMOTE_BUTTON_BASE_PATH + '/remoteEntry.js',
-      MFRemoteButtonAppName: process.env.MF_REMOTE_BUTTON_APP_NAME,
-      innerHTMLContent: preRender.content,
       preReadyEmotionStyles,
+      ...allRemoteAppProps,
     },
   };
 };

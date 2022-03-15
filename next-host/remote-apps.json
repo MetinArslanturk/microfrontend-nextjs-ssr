@@ -1,0 +1,10 @@
+{
+    "RemoteButton": {
+        "env_prefix": "MF_REMOTE_BUTTON",
+        "type": "mf"
+    },
+    "I18N": {
+        "env_prefix": "I18N",
+        "type": "i18n"
+    }
+}

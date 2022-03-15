@@ -24,7 +24,7 @@ class MyDocument extends Document {
       <Html>
         <Head>
           {/* @ts-ignore */}
-          {this.props.pageProps.preReadyEmotionStyles && this.props.pageProps.preReadyEmotionStyles.map((style: any) => {
+          {this.props.pageProps?.preReadyEmotionStyles && this.props.pageProps.preReadyEmotionStyles.map((style: any) => {
               return (
                 <style
                   key={style.key}
@@ -33,10 +33,12 @@ class MyDocument extends Document {
                 />
               );
             })}
-          <script
-            src={`${process.env.I18N_BASE_PATH}/${this.props.locale}/common-i18n-loader.js`}
-            defer={true}
-          />
+
+            <script
+              src={`${process.env.I18N_ENTRY_BASE_PATH}/${this.props.locale}/common-i18n-loader.js`}
+              defer={true}
+            />
+
         </Head>
         <body>
           <Main />

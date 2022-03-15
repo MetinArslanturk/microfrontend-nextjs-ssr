@@ -2,12 +2,9 @@
   "name": "next-host",
   "private": true,
   "scripts": {
-    "next:dev": "next dev",
-    "next:build": "next build",
-    "build": "NODE_ENV=production dotenv -e .remoteapps.env -- node scripts/prebuild.js",
-    "next:start": "next start",
-    "dev": "NODE_ENV=development dotenv -e .remoteapps.env -- node scripts/custom-server.js",
-    "start": "NODE_ENV=production dotenv -e .remoteapps.env -- node scripts/custom-server.js",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
