@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prefill-env": "dotenv -e .env.local -- node scripts/fill-env-vars.js"
+    "prefill-env": "dotenv -e .env.local -- node scripts/fill-env-vars.js",
+    "deploy": "yarn prefill-env && cat .env.local"
   },
   "dependencies": {
     "@emotion/cache": "^11.7.1",
