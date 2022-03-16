@@ -15,6 +15,9 @@ module.exports = {
   mode: "production",
   output: {
     path: path.resolve(__dirname, 'server-dist'),
+    library: {
+      type: 'commonjs',
+    },
     clean: true,
   },
 };

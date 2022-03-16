@@ -12,8 +12,7 @@ import App from "../src/App.js";
 const styleCache = createCache({key: appConfig.appName.toLowerCase()})
 const { extractCriticalToChunks, constructStyleTagsFromChunks } = createEmotionServer(styleCache)
 
-const PORT = process.env.PORT || 3003;
-const app = express();
+export const app = express();
 
 app.use(express.json())
 
@@ -42,7 +41,10 @@ app.post("/prerender", (req, res) => {
   res.send({ content: html, appName: appConfig.appName, styleId: ids, styles: stylesStr });
 });
 
-
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
+app.get("/test", (req, res) => {
+  const html = ReactDOMServer.renderToString(React.createElement("div", null, "Hello world"));
+  res.send(html);
 });
+
+export default app;
+

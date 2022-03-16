@@ -1,0 +1,17 @@
+	
+# serverless.yml
+ 
+service: remote-button-server-renderer
+ 
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: us-east-1
+ 
+functions:
+  app:
+    handler: server/serverless.handler
+    events:
+      - http: ANY /
+      - http: 'ANY /{proxy+}'

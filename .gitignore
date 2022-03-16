@@ -5,6 +5,7 @@ react-remote/node_modules
 react-remote/dist
 react-remote/server-dist
 react-remote/.env.local
+react-remote/.serverless
 i18n/node_modules
 i18n/dist
 i18n/.i18dev

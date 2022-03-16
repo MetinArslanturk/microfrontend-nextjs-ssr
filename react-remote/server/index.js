@@ -5,4 +5,10 @@ require('@babel/register')({
   presets: ['@babel/preset-env', '@babel/preset-react']
 })
 
-require('./server')
+const PORT = process.env.PORT || 3003;
+
+const app = require('./server').default;
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
