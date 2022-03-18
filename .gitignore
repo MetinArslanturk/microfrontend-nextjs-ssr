@@ -1,6 +1,9 @@
 next-host/node_modules
 next-host/.next
 next-host/out
+next-host/.env
+next-host/.serverless
+next-host/.serverless_nextjs
 react-remote/node_modules
 react-remote/dist
 react-remote/server-dist

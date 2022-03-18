@@ -7,7 +7,7 @@
     "start": "next start",
     "lint": "next lint",
     "prefill-env": "dotenv -e .env.local -- node scripts/fill-env-vars.js",
-    "deploy": "yarn prefill-env && cat .env.local"
+    "deploy-serverless": "yarn prefill-env && components-v1"
   },
   "dependencies": {
     "@emotion/cache": "^11.7.1",
