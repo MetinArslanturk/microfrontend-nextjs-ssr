@@ -1,6 +1,6 @@
 import { NextRouter } from "next/router";
 import { postData } from "./fetch";
-import nextI18nextConfig from "../next-i18next.config";
+import { i18nConfig } from "./i18n-config";
 
 export const changeLocale = (router: NextRouter, targetLocale: string) => {
     const {locale} = router;
@@ -38,7 +38,7 @@ export const changeLocale = (router: NextRouter, targetLocale: string) => {
         }
       }).catch(err => {
         // something went wrong so go to current url in new locale with server router (like a real <a> tag) instead client router
-        window.location.href = (targetLocale === nextI18nextConfig.i18n.defaultLocale ? '' : targetLocale) + router.asPath;
+        window.location.href = (targetLocale === i18nConfig.i18n.defaultLocale ? '' : targetLocale) + router.asPath;
       })
    } else {
      // change language without worries

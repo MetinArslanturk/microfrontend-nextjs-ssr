@@ -1,0 +1,9 @@
+{
+    "i18n": {
+      "locales": ["en-US", "es-MX"],
+      "defaultLocale": "en-US",
+      "localePath": "public/static/locales",
+      "localeDetection": false,
+      "allNamespaces": ["common", "second"]
+    }
+  }

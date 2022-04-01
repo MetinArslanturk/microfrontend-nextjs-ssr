@@ -1,5 +1,5 @@
 nextHostApp:
-  component: "@sls-next/serverless-component"
+  component : "./node_modules/@sls-next/serverless-component"
   inputs:
     enableS3Acceleration: false
     policy: "arn:aws:iam::732965079300:policy/serverless-ploicy"

@@ -1,9 +1,10 @@
 import { appWithTranslation } from "../next-i18next";
 import { useEffect, useRef, useContext } from "react";
-import i18nConfig from "../next-i18next.config";
 import type { AppProps } from 'next/app'
 import { useRouter } from "next/router";
 import { GlobalContext, GlobalContextProvider } from "../components/GlobalContext";
+import { i18nConfig } from "../utils/i18n-config";
+
 
 
 function MyApp({ Component, pageProps }: AppProps) {

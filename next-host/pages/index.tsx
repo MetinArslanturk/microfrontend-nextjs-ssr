@@ -4,12 +4,12 @@ import ContentLoader from "react-content-loader";
 import DynamicRemoteApp from "../components/DynamicRemoteApp";
 import styled from "@emotion/styled";
 import { serverSideTranslations, useTranslation } from "../next-i18next";
-import i18nConfig from "../next-i18next.config";
 import { useRouter } from "next/router";
 import { postData } from "../utils/fetch";
 import { changeLocale } from "../utils/locale-changer";
 import { GlobalContext } from "../components/GlobalContext";
 import { RemoteAppKeys, requiredRemoteAppsOfPage, REMOTE_APP_ENVS, RemoteAppProps } from "../remote-app-env-extractor";
+import { i18nConfig } from "../utils/i18n-config";
 
 const Button = styled.button`
   background-color: #4caf50;

@@ -1,14 +1,11 @@
 /** @type {import('next').NextConfig} */
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const deps = require("./package.json").dependencies;
+const nexti18nextConfig = require("./next-i18next.config.json");
 
 const nextConfig = {
   reactStrictMode: true,
-  i18n: {
-    locales: ["en-US", "es-MX"],
-    defaultLocale: "en-US",
-    localeDetection: false,
-  },
+  i18n: nexti18nextConfig.i18n,
   webpack: (config) => {
     config.plugins.push(
       new ModuleFederationPlugin({
