@@ -27,7 +27,6 @@ const getFallbackLocales = (fallbackLng: false | FallbackLng) => {
 export const serverSideTranslations = async (
   initialLocale: string,
   i18Config: UserConfig,
-  i18nBasePath: string,
   i18nDeployId: string,
   namespacesRequired: string[] = [],
   configOverride: UserConfig | null = null,
@@ -75,8 +74,6 @@ export const serverSideTranslations = async (
       ...config,
       lng: initialLocale,
     },
-    i18nBasePath,
-    globalLastDeployId,
     reInit
   );
 

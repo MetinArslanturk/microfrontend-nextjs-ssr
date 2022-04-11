@@ -120,7 +120,6 @@ export const getStaticProps: GetStaticProps = async ({locale}) => {
   const { _nextI18Next, commoni18n } = await serverSideTranslations(
     locale,
     i18nConfig,
-    I18N.pageProps.entryPath,
     I18N.deployID,
     i18nNamespaces
   );

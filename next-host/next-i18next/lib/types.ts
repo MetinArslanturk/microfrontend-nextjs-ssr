@@ -6,7 +6,7 @@ import {
   withTranslation,
   WithTranslation as ReactI18nextWithTranslation,
 } from 'react-i18next'
-import { InitOptions, i18n as I18NextClient, TFunction as I18NextTFunction } from 'i18next'
+import { InitOptions, i18n as I18NextClient, TFunction as I18NextTFunction, Resource } from 'i18next'
 import { appWithTranslation, i18n } from '../index'
 
 type NextJsI18NConfig = {
@@ -24,6 +24,7 @@ export type UserConfig = {
   reloadOnPrerender?: boolean
   serializeConfig?: boolean
   strictMode?: boolean
+  resourceFetcherFn: (config: InternalConfig) => Promise<Resource>
   use?: any[]
 } & InitOptions
 
